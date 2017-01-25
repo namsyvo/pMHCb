@@ -66,7 +66,7 @@ def parseMGF(mgf_file):
 	return uni_pep_mass
 
 #Predicting peptides based on pssm for each HLA allele
-def predict_hla_binded_peptides(pssm_path, pep_seq, pep_mass):
+def predict_hla_binded_peptides(pssm_path, top_num, pep_seq, pep_mass):
 	
 	pep_seq_set = {}
 	for k, v in pep_seq.iteritems():
@@ -80,33 +80,33 @@ def predict_hla_binded_peptides(pssm_path, pep_seq, pep_mass):
         PSSM_HLA = PSSM_HLA_1.copy()
         PSSM_HLA.update(PSSM_HLA_2)
 	for hla_name, hla_pssm in PSSM_HLA.iteritems():
-		top3_aa = []
-		top3_aa_set = set()
+		top_aa = []
+		top_aa_set = set()
 		for pos_val in hla_pssm:
 			pssm_dict = {}
 			for i in range(len(pos_val)):
 				pssm_dict[aa_names[i]] = pos_val[i]
-			top3_val, top3_name = [], []
+			top_val, top_name = [], []
 			i = 0
 			for k in sorted(pssm_dict, key=pssm_dict.get, reverse=True):
-				top3_val.append(pssm_dict[k])
-				top3_name.append(k)
-				top3_aa_set.add(k)
+				top_val.append(pssm_dict[k])
+				top_name.append(k)
+				top_aa_set.add(k)
 				i += 1
-				if i == 3:
+				if i == top_num:
 					break
-			top3_aa.append(top3_name)
+			top_aa.append(top_name)
 
 		cand_pep_seq = {}
 		for k, v in pep_seq_set.iteritems():
 			cand_pep = []
 			for i in range(len(v)):
-				if v[i].issubset(top3_aa_set):
+				if v[i].issubset(top_aa_set):
 					cand_pep.append(pep_seq[k][i])
 			if len(cand_pep) != 0:
 				cand_pep_seq[k] = cand_pep
 
-		print hla_name, top3_aa_set
+		print hla_name, top_aa_set
 		if len(cand_pep_seq) == 0:
 			continue
 		else:
@@ -115,7 +115,7 @@ def predict_hla_binded_peptides(pssm_path, pep_seq, pep_mass):
 
                 if len(cand_pep_seq) > 0:
                         binded_pep_seq = {}
-                        for t in itertools.product(*top3_aa):
+                        for t in itertools.product(*top_aa):
                                 for k, v in cand_pep_seq.iteritems():
                                         binded_pep = []
                                         for pep in v:
@@ -127,31 +127,32 @@ def predict_hla_binded_peptides(pssm_path, pep_seq, pep_mass):
                                                 binded_pep_seq[k].append(binded_pep)
                         if len(binded_pep_seq) > 0:
                                 for k, v in binded_pep_seq.iteritems():
-                                        f = open(os.path.join("predicted_peptides_top3", "9-mer_" + str(k) + "-mass_binded.txt"), "a")
-                                        f.write("binded_peptides\tbinded_hla_allele\tpredicted_pep_seq\n")
+                                        f = open(os.path.join("predicted_peptides_top" + str(top_num), "9-mer_" + str(k) + "-mass_binded.txt"), "a")
                                         for binded_pep in v:
                                                 for pep in binded_pep:
                                                         f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
                                         f.close()
 
 if __name__ == "__main__":
-	uni_pep_mass = parseMGF(sys.argv[1])
+
+        uni_pep_mass = parseMGF(sys.argv[1])
 
 	aaName, aaMass = [], []
-	f = open(sys.argv[3])
+	f = open(sys.argv[2])
 	for line in f:
 		tokens = line.strip().split("\t")
 		aaName.append(tokens[0])
 		aaMass.append(float(tokens[1]))
 	f.close()
 
-	if not os.path.exists("predicted_peptides_top3"):
-		os.makedirs("predicted_peptides_top3")
+        pssm_path = sys.argv[3]
+        top_num = int(sys.argv[4])
+	if not os.path.exists("predicted_peptides_top" + str(top_num)):
+		os.makedirs("predicted_peptides_top" + str(top_num))
 
-        k_mass = int(sys.argv[4])
-	pep_seq, pep_mass = {}, {}
-        '''
-	#for pm in uni_pep_mass[70*k_mass:70*k_mass+70]:
+        k_mass = int(sys.argv[5])
+        pep_seq, pep_mass = {}, {}
+	for pm in uni_pep_mass[70*k_mass:70*k_mass+70]:
 	#for pm in uni_pep_mass[70*k_mass:]:
 		m = 2*int(pm) - 20; #multiple charge (=2), substract mass of H2O (=18) and H+ (=1) and one more H+?
 		v = [int(x) for x in aaMass]
@@ -159,20 +160,19 @@ if __name__ == "__main__":
 		for k in [-1, 0, 1]:
 			solNum, solPep, solMass = PeptideGeneration.generatePeptides(m - k, v, aaName)
 			for i in range(len(solPep)):
-				if len(solPep[i]) == 9 or len(solPep[i]) == 8 \
-                                   or len(solPep[i]) == 10 or len(solPep[i]) == 11:
-					pep_seq_list.append(solPep[i])
-					pep_mass_list.append(solMass[i])
-		pep_seq[pm] = pep_seq_list
+                            if len(solPep[i]) == 9:
+                                    pep_seq_list.append(solPep[i])
+                                    pep_mass_list.append(solMass[i])
+                pep_seq[pm] = pep_seq_list
 		pep_mass[pm] = pep_mass_list
 
-		f = open(os.path.join("predicted_peptides_top3", "9-mer_" + str(pm) + "-mass_predicted.txt"), "w")
+		f = open(os.path.join("predicted_peptides_top" + str(top_num), "9-mer_" + str(pm) + "-mass_predicted.txt"), "w")
 		f.write("predicted_peptides\taa_mass\n")
 		for i in range(len(pep_seq_list)):
 			f.write(pep_seq_list[i] + "\t" + pep_mass_list[i] + "\n")
 		f.close()
-        '''
 
+        '''
 	for pm in [385.23495, 402.22269, 443.23782]:
                 if pm == 385.23495:
                         pep_seq[pm] = ["KIVGAGPGA"]
@@ -183,10 +183,10 @@ if __name__ == "__main__":
                 if pm == 443.23782:
                         pep_seq[pm] = ["AVATEAPNL"]
                         pep_mass[pm] = ["885.46837"]
-		f = open(os.path.join("predicted_peptides_top3", "9-mer_" + str(pm) + "-mass_predicted.txt"), "w")
+		f = open(os.path.join("predicted_peptides_top4", "9-mer_" + str(pm) + "-mass_predicted.txt"), "w")
 		f.write("predicted_peptides\taa_mass\n")
 		for i in range(len(pep_seq[pm])):
 			f.write(pep_seq[pm][i] + "\t" + pep_mass[pm][i] + "\n")
 		f.close()
-
-	binded_pep_seq = predict_hla_binded_peptides(sys.argv[2], pep_seq, pep_mass)
+        '''
+	binded_pep_seq = predict_hla_binded_peptides(pssm_path, top_num, pep_seq, pep_mass)
