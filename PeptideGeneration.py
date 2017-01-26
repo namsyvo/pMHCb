@@ -7,7 +7,7 @@ Output: all possible peptide sequences of which theoretical mass sum equal to m
 '''
 
 #paras: float expMass, float expPPM, string[] aaName, float[] aaMass
-def generatePeptides(m, v, aaName):
+def generate_sequences(m, v, aaName):
 
 	aaSeqNumb = [[] for _ in range(len(v) + 1)]
 	aaSeqName = [[] for _ in range(len(v) + 1)]
@@ -92,8 +92,33 @@ def generatePeptides(m, v, aaName):
 		print
 	'''
 
-	return aaSeqNumb[len(v)][m], aaSeqName[len(v)][m], aaSeqMass[len(v)][m]
+	return aaSeqName[len(v)][m], aaSeqMass[len(v)][m]
 
+def generate_peptides(expMass, expPPM, aaName, aaMass):
+
+	M = expMass - 15.994915 - 2*1.007825 - 1.007825 # exclusive H2O and H+
+	m = int(expMass) - 19; #substract mass of H2O and H+
+	v = [int(x) for x in aaMass]
+	aaMassDict = {}
+	for i in range(len(aaName)):
+		aaMassDict[aaName[i]] = aaMass[i]
+
+	pep_seq, pep_mass = {}, {}
+	for md in [-1, 0, 1]:
+		aa_seq, aa_mass = generate_sequences(m + md, v, aaName)
+		for i in range(len(aa_seq)):
+			for k in [8, 9, 10, 11]:
+				if len(aa_seq[i]) == k:
+					mass = 0.0
+					for aa in aa_seq[i]:
+						mass += aaMassDict[aa]
+					if abs((mass - M)/M) <= expPPM * (10**(-6)):
+						if k not in pep_seq:
+							pep_seq[k] = []
+							pep_mass[k] = []
+						pep_seq[k].append(aa_seq[i])
+						pep_mass[k].append(aa_mass[i])
+	return pep_seq, pep_mass
 
 #Testing
 import sys
@@ -110,28 +135,14 @@ if __name__ == "__main__":
 		aaName.append(tokens[0])
 		aaMass.append(float(tokens[1]))
 
-	m = int(expMass) - 18 - 1; #substract mass of H2O and H+
-	v = [int(x) for x in aaMass]
-
-	solNum, solPep, solMass = generatePeptides(m, v, aaName)
+	pep_seq, pep_mass = generate_peptides(expMass, expPPM, aaName, aaMass)
 
 	#print out the peptides
-	print "Predicted Peptides for Mass " + str(expMass) + " with Delta Mass " + str(expPPM) + " PPM (aa mass " + str(m) + "):"
-	if solNum == 0:
-		print "No solution"
+	print "Peptides for Mass " + str(expMass) + " with Delta Mass " + str(expPPM) + " PPM (aa mass " + str(int(expMass) - 19) + "):"
+	for k in pep_seq:
+		print "There are totally " + str(len(pep_seq[k])) + " candidate " + str(k) + "-mer sequences."
 
-	for k in [8, 9, 10, 11]:
-		print str(k) + "-mer sequences (rounded mass of aa in the sequence):"
-		count = 0
-		for i in range(len(solPep)):
-			if len(solPep[i]) == k:
-				print str(count + 1) + " : " + str(solPep[i]) + " (" + str(solMass[i]) + ")"
-				count += 1
-		print "There are totally " + str(count) + " predicted " + str(k) + "-mer sequences."
-
-	print "All sequences (rounded mass of aa in the sequence):"
-	count = 0
-	for i in range(len(solPep)):
-		print str(count + 1) + " : " + str(solPep[i]) + " (" + str(solMass[i]) + ")"
-		count += 1
-	print "There are totally " + str(count) + " predicted sequences."
+	for k in pep_seq:
+		print str(k) + "-mer sequences:"
+		for i in range(len(pep_seq[k])):
+			print str(i + 1) + " : " + str(pep_seq[k][i]) + " (" + str(pep_mass[k][i]) + ")"
