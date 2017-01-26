@@ -1,31 +1,31 @@
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 0  > predicted_peptides_bound_top5/log/prog_log0.txt > predicted_peptides_bound_top5/log/err_log0.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 1  > predicted_peptides_bound_top5/log/prog_log1.txt > predicted_peptides_bound_top5/log/err_log1.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 2  > predicted_peptides_bound_top5/log/prog_log2.txt > predicted_peptides_bound_top5/log/err_log2.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 3  > predicted_peptides_bound_top5/log/prog_log3.txt > predicted_peptides_bound_top5/log/err_log3.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 4  > predicted_peptides_bound_top5/log/prog_log4.txt > predicted_peptides_bound_top5/log/err_log4.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 5  > predicted_peptides_bound_top5/log/prog_log5.txt > predicted_peptides_bound_top5/log/err_log5.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 6  > predicted_peptides_bound_top5/log/prog_log6.txt > predicted_peptides_bound_top5/log/err_log6.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 7  > predicted_peptides_bound_top5/log/prog_log7.txt > predicted_peptides_bound_top5/log/err_log7.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 8  > predicted_peptides_bound_top5/log/prog_log8.txt > predicted_peptides_bound_top5/log/err_log8.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 9  > predicted_peptides_bound_top5/log/prog_log9.txt > predicted_peptides_bound_top5/log/err_log9.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 10 > predicted_peptides_bound_top5/log/prog_log10.txt > predicted_peptides_bound_top5/log/lerr_og10.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 11 > predicted_peptides_bound_top5/log/prog_log11.txt > predicted_peptides_bound_top5/log/lerr_og11.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 12 > predicted_peptides_bound_top5/log/prog_log12.txt > predicted_peptides_bound_top5/log/lerr_og12.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 13 > predicted_peptides_bound_top5/log/prog_log13.txt > predicted_peptides_bound_top5/log/lerr_og13.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 14 > predicted_peptides_bound_top5/log/prog_log14.txt > predicted_peptides_bound_top5/log/lerr_og14.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 15 > predicted_peptides_bound_top5/log/prog_log15.txt > predicted_peptides_bound_top5/log/lerr_og15.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 16 > predicted_peptides_bound_top5/log/prog_log16.txt > predicted_peptides_bound_top5/log/lerr_og16.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 17 > predicted_peptides_bound_top5/log/prog_log17.txt > predicted_peptides_bound_top5/log/lerr_og17.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 18 > predicted_peptides_bound_top5/log/prog_log18.txt > predicted_peptides_bound_top5/log/lerr_og18.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 19 > predicted_peptides_bound_top5/log/prog_log19.txt > predicted_peptides_bound_top5/log/lerr_og19.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 20 > predicted_peptides_bound_top5/log/prog_log20.txt > predicted_peptides_bound_top5/log/lerr_og20.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 21 > predicted_peptides_bound_top5/log/prog_log21.txt > predicted_peptides_bound_top5/log/lerr_og21.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 22 > predicted_peptides_bound_top5/log/prog_log22.txt > predicted_peptides_bound_top5/log/lerr_og22.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 23 > predicted_peptides_bound_top5/log/prog_log23.txt > predicted_peptides_bound_top5/log/lerr_og23.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 24 > predicted_peptides_bound_top5/log/prog_log24.txt > predicted_peptides_bound_top5/log/lerr_og24.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 25 > predicted_peptides_bound_top5/log/prog_log25.txt > predicted_peptides_bound_top5/log/lerr_og25.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 26 > predicted_peptides_bound_top5/log/prog_log26.txt > predicted_peptides_bound_top5/log/lerr_og26.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 27 > predicted_peptides_bound_top5/log/prog_log27.txt > predicted_peptides_bound_top5/log/lerr_og27.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 28 > predicted_peptides_bound_top5/log/prog_log28.txt > predicted_peptides_bound_top5/log/lerr_og28.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 29 > predicted_peptides_bound_top5/log/prog_log29.txt > predicted_peptides_bound_top5/log/lerr_og29.txt &
-python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 30 > predicted_peptides_bound_top5/log/prog_log30.txt > predicted_peptides_bound_top5/log/lerr_og30.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 0  1>predicted_peptides_bound_top5/log/prog_log0.txt  2>predicted_peptides_bound_top5/log/err_log0.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 1  1>predicted_peptides_bound_top5/log/prog_log1.txt  2>predicted_peptides_bound_top5/log/err_log1.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 2  1>predicted_peptides_bound_top5/log/prog_log2.txt  2>predicted_peptides_bound_top5/log/err_log2.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 3  1>predicted_peptides_bound_top5/log/prog_log3.txt  2>predicted_peptides_bound_top5/log/err_log3.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 4  1>predicted_peptides_bound_top5/log/prog_log4.txt  2>predicted_peptides_bound_top5/log/err_log4.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 5  1>predicted_peptides_bound_top5/log/prog_log5.txt  2>predicted_peptides_bound_top5/log/err_log5.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 6  1>predicted_peptides_bound_top5/log/prog_log6.txt  2>predicted_peptides_bound_top5/log/err_log6.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 7  1>predicted_peptides_bound_top5/log/prog_log7.txt  2>predicted_peptides_bound_top5/log/err_log7.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 8  1>predicted_peptides_bound_top5/log/prog_log8.txt  2>predicted_peptides_bound_top5/log/err_log8.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 9  1>predicted_peptides_bound_top5/log/prog_log9.txt  2>predicted_peptides_bound_top5/log/err_log9.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 10 1>predicted_peptides_bound_top5/log/prog_log10.txt 2>predicted_peptides_bound_top5/log/err_log10.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 11 1>predicted_peptides_bound_top5/log/prog_log11.txt 2>predicted_peptides_bound_top5/log/err_log11.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 12 1>predicted_peptides_bound_top5/log/prog_log12.txt 2>predicted_peptides_bound_top5/log/err_log12.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 13 1>predicted_peptides_bound_top5/log/prog_log13.txt 2>predicted_peptides_bound_top5/log/err_log13.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 14 1>predicted_peptides_bound_top5/log/prog_log14.txt 2>predicted_peptides_bound_top5/log/err_log14.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 15 1>predicted_peptides_bound_top5/log/prog_log15.txt 2>predicted_peptides_bound_top5/log/err_log15.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 16 1>predicted_peptides_bound_top5/log/prog_log16.txt 2>predicted_peptides_bound_top5/log/err_log16.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 17 1>predicted_peptides_bound_top5/log/prog_log17.txt 2>predicted_peptides_bound_top5/log/err_log17.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 18 1>predicted_peptides_bound_top5/log/prog_log18.txt 2>predicted_peptides_bound_top5/log/err_log18.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 19 1>predicted_peptides_bound_top5/log/prog_log19.txt 2>predicted_peptides_bound_top5/log/err_log19.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 20 1>predicted_peptides_bound_top5/log/prog_log20.txt 2>predicted_peptides_bound_top5/log/err_log20.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 21 1>predicted_peptides_bound_top5/log/prog_log21.txt 2>predicted_peptides_bound_top5/log/err_log21.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 22 1>predicted_peptides_bound_top5/log/prog_log22.txt 2>predicted_peptides_bound_top5/log/err_log22.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 23 1>predicted_peptides_bound_top5/log/prog_log23.txt 2>predicted_peptides_bound_top5/log/err_log23.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 24 1>predicted_peptides_bound_top5/log/prog_log24.txt 2>predicted_peptides_bound_top5/log/err_log24.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 25 1>predicted_peptides_bound_top5/log/prog_log25.txt 2>predicted_peptides_bound_top5/log/err_log25.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 26 1>predicted_peptides_bound_top5/log/prog_log26.txt 2>predicted_peptides_bound_top5/log/err_log26.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 27 1>predicted_peptides_bound_top5/log/prog_log27.txt 2>predicted_peptides_bound_top5/log/err_log27.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 28 1>predicted_peptides_bound_top5/log/prog_log28.txt 2>predicted_peptides_bound_top5/log/err_log28.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 29 1>predicted_peptides_bound_top5/log/prog_log29.txt 2>predicted_peptides_bound_top5/log/err_log29.txt &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 30 1>predicted_peptides_bound_top5/log/prog_log30.txt 2>predicted_peptides_bound_top5/log/err_log30.txt &
