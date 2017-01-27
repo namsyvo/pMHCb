@@ -127,7 +127,7 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 			continue
 
 		for k, v in bound_pep_seq.iteritems():
-			f = open(os.path.join("predicted_peptides_bound_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
+			f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
 			for bound_pep in v:
 				for pep in bound_pep:
 					f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
@@ -148,36 +148,31 @@ if __name__ == "__main__":
 
 	pssm_path = sys.argv[3]
 	top_num = int(sys.argv[4])
-	if not os.path.exists("predicted_peptides_bound_top" + str(top_num)):
-		os.makedirs("predicted_peptides_bound_top" + str(top_num))
+	if not os.path.exists("test_mass_top" + str(top_num)):
+		os.makedirs("test_mass" + str(top_num))
 
 	k_mass = int(sys.argv[5])
 	ppm = 10.0
 	k_mer = 9
 	pep_seq, pep_mass = {}, {}
 
-	'''
 	# Test
-	for pm in [385.23495, 402.22269, 443.23782]:
-		if pm == 385.23495:
-			pep_seq[pm] = ["KIVGAGPGA"]
-			pep_mass[pm] = ["769.46263"]
-		if pm == 402.22269:
-			pep_seq[pm] = ["LGGSGSGLR"]
-			pep_mass[pm] = ["803.4381"]
-		if pm == 443.23782:
-			pep_seq[pm] = ["AVATEAPNL"]
-			pep_mass[pm] = ["885.46837"]
+	seq_list = ["KIVGAGPGA","LGGSGSGLR","AVATEAPNL","IGIAPLAQL","GLLGTLVQL","DGGNESDPM","ALASHLIEA","AIVDKVPSV","SLLDKIIGA","SLLGGNIRL","ALLDSAHLL","SLLEKSLGL","AVLTELRAV","TLIEDILGV","LSAEKIQAL","KLIANNTTV","ISRALVTTL","SLGLPQDVPG","SLFPGKLEV"]
+	mz_list = ["385.23495","402.22269","443.23782","448.28342","457.28906","461.16895","462.76172","464.27966","465.28659","471.7916","476.77765","480.29266","486.29782","486.78546","486.79044","487.28766","487.30121","491.76447","495.28641"]
+	mass_list = ["769.46263","803.4381","885.46837","895.55956","913.57085","921.33061","924.51616","927.55205","929.5659","942.57591","952.54802","959.57805","971.58837","972.56365","972.57359","973.56804","973.59514","982.52165","989.56554"]
+	for i in range(len(seq_list)):
+		pep_seq[mz_list[i]] = [seq_list[i]]
+		pep_mass[mz_list[i]] = [mass_list[i]]
 
-		f = open(os.path.join("predicted_peptides_top" + str(top_num), str(k_mer) + "-mer_" + str(pm) + "-mass_predicted.txt"), "w")
+		f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_" + str(mz_list[i]) + "-mass_predicted.txt"), "w")
 		f.write("predicted_peptides\taa_mass\n")
-		for i in range(len(pep_seq[pm])):
-			f.write(pep_seq[pm][i] + "\t" + pep_mass[pm][i] + "\n")
+		for j in range(len(pep_seq[mz_list[i]])):
+			f.write(pep_seq[mz_list[i]][j] + "\t" + pep_mass[mz_list[i]][j] + "\n")
 		f.close()
 
 	bound_pep_seq = predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass)
-	'''
 
+	'''
 	for pm in uni_pep_mass[:1]:
 	#for pm in uni_pep_mass[70*k_mass:70*k_mass+70]:
 	#for pm in uni_pep_mass[70*k_mass:]:
@@ -199,3 +194,4 @@ if __name__ == "__main__":
 		f.close()
 
 	bound_pep_seq = predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass)
+	'''
