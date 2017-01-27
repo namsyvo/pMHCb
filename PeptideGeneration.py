@@ -103,6 +103,7 @@ def generate_peptides(expMass, expPPM, aaName, aaMass):
 	for i in range(len(aaName)):
 		aaMassDict[aaName[i]] = aaMass[i]
 
+	err_rate = expPPM * pow(10, -6)
 	pep_seq, pep_mass = {}, {}
 	for md in [-1, 0, 1]:
 		aa_seq, aa_mass = generate_sequences(m + md, v, aaName)
@@ -112,7 +113,7 @@ def generate_peptides(expMass, expPPM, aaName, aaMass):
 					mass = 0.0
 					for aa in aa_seq[i]:
 						mass += aaMassDict[aa]
-					if abs((mass - M)/M) <= expPPM * (10**(-6)):
+					if abs((mass/M - 1)) <= err_rate:
 						if k not in pep_seq:
 							pep_seq[k] = []
 							pep_mass[k] = []

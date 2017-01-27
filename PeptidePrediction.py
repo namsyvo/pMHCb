@@ -11,7 +11,6 @@ import os
 import sys
 import itertools
 import collections
-cmp_list = lambda x, y: collections.Counter(x) == collections.Counter(y)
 
 #Analyzing PSSM (position-specific scoring matrix) data
 #Data obtained from MHC Motif Viewer(http://www.cbs.dtu.dk/biotools/MHCMotifViewer/Home.html)
@@ -67,7 +66,7 @@ def parseMGF(mgf_file):
 
 #Predicting peptides based on pssm for each HLA allele
 def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
-	
+
 	pep_seq_set = {}
 	for k, v in pep_seq.iteritems():
 		pep_set = []
@@ -75,13 +74,17 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 			pep_set.append(set(p))
 		pep_seq_set[k] = pep_set
 
-        aa_names, PSSM_HLA_1, PSSM_HLA_2 = getPSSM(pssm_path)
-        PSSM_HLA = PSSM_HLA_1.copy()
-        PSSM_HLA.update(PSSM_HLA_2)
+	aa_names, PSSM_HLA_1, PSSM_HLA_2 = getPSSM(pssm_path)
+	PSSM_HLA = PSSM_HLA_1.copy()
+	PSSM_HLA.update(PSSM_HLA_2)
+	print "# of HLA alleles:", len(PSSM_HLA)
 
+	pep_db = {}
+	print "indexing pssm..."
 	for hla_name, hla_pssm in PSSM_HLA.iteritems():
 		top_aa = []
 		top_aa_set = set()
+		path_num = 1
 		for pos_val in hla_pssm:
 			pssm_dict = {}
 			for i in range(len(pos_val)):
@@ -96,47 +99,72 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 				top_name.append(k)
 				top_aa_set.add(k)
 			top_aa.append(top_name)
+			path_num *= (i-1)
 
-		cand_pep_seq = {}
-		for k, v in pep_seq_set.iteritems():
-			cand_pep = []
-			for i in range(len(v)):
-				if v[i].issubset(top_aa_set):
-					cand_pep.append(pep_seq[k][i])
-			if len(cand_pep) != 0:
-				cand_pep_seq[k] = cand_pep
-		if len(cand_pep_seq) == 0:
-			continue
+		print "#of paths of ", hla_name, ":", path_num
 
-		print hla_name, top_aa
-		for k, v in cand_pep_seq.iteritems():
-			print k, len(v), len(pep_seq[k]), v
-
-		bound_pep_seq = {}
+		count = 0
 		for t in itertools.product(*top_aa):
-			for k, v in cand_pep_seq.iteritems():
-				bound_pep = []
-				for pep in v:
-					if cmp_list(pep, t):
-						bound_pep.append([pep, hla_name, t])
-                if len(bound_pep) != 0:
-					if k not in bound_pep_seq:
-						bound_pep_seq[k] = []
-					bound_pep_seq[k].append(bound_pep)
-		if len(bound_pep_seq) == 0:
-			continue
+			aa_col = collections.Counter(t)
+			aa_score = ""
+			for aa in aa_names:
+				aa_score += str(aa_col.get(aa, 0))
+				if aa_score not in pep_db:
+					pep_db[aa_score] = []
+				pep_db[aa_score].append([hla_name, t])
+			count += 1
+			if count % 100000 == 0:
+				print "processed", count, "paths"
 
-		for k, v in bound_pep_seq.iteritems():
-			f = open(os.path.join("predicted_peptides_bound_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
-			for bound_pep in v:
-				for pep in bound_pep:
-					f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
-			f.close()
+	print "# of items in pssm index:", len(pep_db)
+	'''
+	cand_pep_seq = {}
+	for k, v in pep_seq_set.iteritems():
+		cand_pep = []
+		for i in range(len(v)):
+			if v[i].issubset(top_aa_set):
+				cand_pep.append(pep_seq[k][i])
+		if len(cand_pep) != 0:
+			cand_pep_seq[k] = cand_pep
+	if len(cand_pep_seq) == 0:
+		continue
+
+	print hla_name, top_aa
+	for k, v in cand_pep_seq.iteritems():
+		print k, len(v), len(pep_seq[k]), v
+
+	bound_pep_seq = {}
+	for k, v in cand_pep_seq.iteritems():
+		bound_pep = []
+		for pep in v:
+			aa_col = collections.Counter(pep)
+			aa_score = ""
+			for aa in aa_names:
+				aa_score += str(aa_col.get(aa, 0))
+			if aa_score in pep_db:
+				bound_pep.append([pep, hla_name, pep_db[aa_score]])
+        if len(bound_pep) != 0:
+			if k not in bound_pep_seq:
+				bound_pep_seq[k] = []
+			bound_pep_seq[k].append(bound_pep)
+
+	if len(bound_pep_seq) == 0:
+		continue
+
+	for k, v in bound_pep_seq.iteritems():
+		f = open(os.path.join("predicted_peptides_bound_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
+		for bound_pep in v:
+			for pep in bound_pep:
+				f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
+		f.close()
+	'''
 
 #Main program
 if __name__ == "__main__":
 
+	print "reading input data..."
 	uni_pep_mass = parseMGF(sys.argv[1])
+	print "# of unique items in mass data", len(uni_pep_mass)
 
 	aaName, aaMass = [], []
 	f = open(sys.argv[2])
@@ -178,7 +206,9 @@ if __name__ == "__main__":
 	bound_pep_seq = predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass)
 	'''
 
-	for pm in uni_pep_mass[:1]:
+	print "generating peptide sequences..."
+	count = 0
+	for pm in uni_pep_mass:
 	#for pm in uni_pep_mass[70*k_mass:70*k_mass+70]:
 	#for pm in uni_pep_mass[70*k_mass:]:
 		mass = 2*pm - 1.007825 #charge=2, and exclusive H+? need to clarify...
@@ -186,16 +216,21 @@ if __name__ == "__main__":
 		solPep, solMass = PeptideGeneration.generate_peptides(mass, ppm, aaName, aaMass)
 		if k_mer not in solPep:
 			continue
+		count += len(solPep[k_mer])
 		for i in range(len(solPep[k_mer])):
 			pep_seq_list.append(solPep[k_mer][i])
 			pep_mass_list.append(solMass[k_mer][i])
 		pep_seq[pm] = pep_seq_list
 		pep_mass[pm] = pep_mass_list
-
+		print pm, len(pep_seq[pm])
+		'''
 		f = open(os.path.join("predicted_peptides_bound_top" + str(top_num), str(k_mer) + "-mer_" + str(pm) + "-mass_predicted.txt"), "w")
 		f.write("peptides\taa_mass\n")
 		for i in range(len(pep_seq[pm])):
 			f.write(pep_seq[pm][i] + "\t" + pep_mass[pm][i] + "\n")
 		f.close()
+		'''
+	print "# of generated peptide sequences:", count
 
-	bound_pep_seq = predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass)
+	print "searching for bound peptides..."
+	#bound_pep_seq = predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass)
