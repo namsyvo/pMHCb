@@ -79,6 +79,7 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
         PSSM_HLA = PSSM_HLA_1.copy()
         PSSM_HLA.update(PSSM_HLA_2)
 
+        hla_num = 0
 	for hla_name, hla_pssm in PSSM_HLA.iteritems():
 		top_aa = []
 		top_aa_set = set()
@@ -108,9 +109,14 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 		if len(cand_pep_seq) == 0:
 			continue
 
-		print hla_name, top_aa
+                f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_log.txt"), "a")
+                hla_num += 1
+		f.write(str(hla_num) + "\t" + str(hla_name) + "\t" + str(top_aa) + "\n")
+                print "hla", hla_num, hla_name
 		for k, v in cand_pep_seq.iteritems():
-			print k, len(v), len(pep_seq[k]), v
+			f.write(str(k) + "\t" + str(len(v)) + "\t" + str(len(pep_seq[k])) + "\t" + str(v) + "\n")
+                        print "cand", k, len(v), len(pep_seq[k])
+                f.close()
 
 		bound_pep_seq = {}
 		for t in itertools.product(*top_aa):
@@ -119,18 +125,18 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 				for pep in v:
 					if cmp_list(pep, t):
 						bound_pep.append([pep, hla_name, t])
-                if len(bound_pep) != 0:
-					if k not in bound_pep_seq:
-						bound_pep_seq[k] = []
-					bound_pep_seq[k].append(bound_pep)
+                                if len(bound_pep) != 0:
+                                        if k not in bound_pep_seq:
+                                                bound_pep_seq[k] = []
+                                                bound_pep_seq[k].append(bound_pep)
 		if len(bound_pep_seq) == 0:
 			continue
-
 		for k, v in bound_pep_seq.iteritems():
 			f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
 			for bound_pep in v:
 				for pep in bound_pep:
 					f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
+                                        print "bound", pep[0], pep[1], pep[2]
 			f.close()
 
 #Main program
@@ -160,7 +166,8 @@ if __name__ == "__main__":
 	seq_list = ["KIVGAGPGA","LGGSGSGLR","AVATEAPNL","IGIAPLAQL","GLLGTLVQL","DGGNESDPM","ALASHLIEA","AIVDKVPSV","SLLDKIIGA","SLLGGNIRL","ALLDSAHLL","SLLEKSLGL","AVLTELRAV","TLIEDILGV","LSAEKIQAL","KLIANNTTV","ISRALVTTL","SLGLPQDVPG","SLFPGKLEV"]
 	mz_list = ["385.23495","402.22269","443.23782","448.28342","457.28906","461.16895","462.76172","464.27966","465.28659","471.7916","476.77765","480.29266","486.29782","486.78546","486.79044","487.28766","487.30121","491.76447","495.28641"]
 	mass_list = ["769.46263","803.4381","885.46837","895.55956","913.57085","921.33061","924.51616","927.55205","929.5659","942.57591","952.54802","959.57805","971.58837","972.56365","972.57359","973.56804","973.59514","982.52165","989.56554"]
-	for i in range(len(seq_list)):
+	#for i in range(len(seq_list)):
+	for i in [0]:
 		pep_seq[mz_list[i]] = [seq_list[i]]
 		pep_mass[mz_list[i]] = [mass_list[i]]
 
