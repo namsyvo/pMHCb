@@ -81,6 +81,10 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 
         hla_num = 0
 	for hla_name, hla_pssm in PSSM_HLA.iteritems():
+		if hla_name not in ["#HLA-B4001", "#HLA-B4004", "#HLA-B4004", "#HLA-B4011", "#HLA-B4014", \
+		"#HLA-B4033", "#HLA-B4038", "#HLA-B4042", "#HLA-B4054", "#HLA-B4055", "#HLA-B4062", "#HLA-B4064", \
+		"#HLA-B4064", "#HLA-B4065", "#HLA-B4066", "#HLA-B4067", "#HLA-B4069", "#HLA-B4074", "#HLA-B4076", "#HLA-B4077"]:
+			continue
 		top_aa = []
 		top_aa_set = set()
 		for pos_val in hla_pssm:
@@ -91,7 +95,8 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 			i = 0
 			for k in sorted(pssm_dict, key=pssm_dict.get, reverse=True):
 				i += 1
-				if i > top_num or pssm_dict[k] <= 0: #take top_num AAs but with positive scores
+				#if i > top_num or pssm_dict[k] <= 0: #take top_num AAs but with positive scores
+				if i > top_num: #take top_num AAs
 					break
 				top_val.append(pssm_dict[k])
 				top_name.append(k)
@@ -109,14 +114,14 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 		if len(cand_pep_seq) == 0:
 			continue
 
-                f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_log.txt"), "a")
-                hla_num += 1
+		f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_log.txt"), "a")
+		hla_num += 1
 		f.write(str(hla_num) + "\t" + str(hla_name) + "\t" + str(top_aa) + "\n")
-                print "hla", hla_num, hla_name
+		print "hla", hla_num, hla_name
 		for k, v in cand_pep_seq.iteritems():
 			f.write(str(k) + "\t" + str(len(v)) + "\t" + str(len(pep_seq[k])) + "\t" + str(v) + "\n")
-                        print "cand", k, len(v), len(pep_seq[k])
-                f.close()
+			print "cand", k, len(v), len(pep_seq[k])
+		f.close()
 
 		bound_pep_seq = {}
 		for t in itertools.product(*top_aa):
@@ -125,10 +130,10 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 				for pep in v:
 					if cmp_list(pep, t):
 						bound_pep.append([pep, hla_name, t])
-                                if len(bound_pep) != 0:
-                                        if k not in bound_pep_seq:
-                                                bound_pep_seq[k] = []
-                                                bound_pep_seq[k].append(bound_pep)
+				if len(bound_pep) != 0:
+					if k not in bound_pep_seq:
+						bound_pep_seq[k] = []
+						bound_pep_seq[k].append(bound_pep)
 		if len(bound_pep_seq) == 0:
 			continue
 		for k, v in bound_pep_seq.iteritems():
@@ -136,7 +141,7 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 			for bound_pep in v:
 				for pep in bound_pep:
 					f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
-                                        print "bound", pep[0], pep[1], pep[2]
+					print "bound", pep[0], pep[1], pep[2]
 			f.close()
 
 #Main program
@@ -155,7 +160,7 @@ if __name__ == "__main__":
 	pssm_path = sys.argv[3]
 	top_num = int(sys.argv[4])
 	if not os.path.exists("test_mass_top" + str(top_num)):
-		os.makedirs("test_mass" + str(top_num))
+		os.makedirs("test_mass_top" + str(top_num))
 
 	k_mass = int(sys.argv[5])
 	ppm = 10.0
