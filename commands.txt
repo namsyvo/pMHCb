@@ -29,3 +29,26 @@ python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 27 1>pr
 python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 28 1>predicted_peptides_bound_top5/log/prog_log28.txt 2>predicted_peptides_bound_top5/log/err_log28.txt &
 python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 29 1>predicted_peptides_bound_top5/log/prog_log29.txt 2>predicted_peptides_bound_top5/log/err_log29.txt &
 python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 30 1>predicted_peptides_bound_top5/log/prog_log30.txt 2>predicted_peptides_bound_top5/log/err_log30.txt &
+
+
+
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 0 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 1 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 2 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 3 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 4 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 5 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 6 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 7 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 8 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 9 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 10 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 11 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 12 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 13 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 14 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 15 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 16 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 17 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 18 &
+python PeptidePrediction.py 061915mhc1-2400-cont1.mgf aa_mass.txt PSSM 5 19 &
