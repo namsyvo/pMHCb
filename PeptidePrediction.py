@@ -187,7 +187,7 @@ if __name__ == "__main__":
 	print "generating peptide sequences..."
 	count = 0
 	#for pm in uni_pep_mass:
-	for pm in uni_pep_mass[50*k_mass:50*k_mass+50]:
+	for pm in uni_pep_mass[20*k_mass:20*k_mass+20]:
 		mass = 2*pm - 1.007825 #charge=2, and exclusive H+? need to clarify...
 		pep_seq_list, pep_mass_list = [], []
 		solPep, solMass = PeptideGeneration.generate_peptides(mass, ppm, aaName, aaMass)
