@@ -81,10 +81,6 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 
 	hla_num = 0
 	for hla_name, hla_pssm in PSSM_HLA.iteritems():
-		if hla_name not in ["#HLA-B4001", "#HLA-B4004", "#HLA-B4004", "#HLA-B4011", "#HLA-B4014", \
-		"#HLA-B4033", "#HLA-B4038", "#HLA-B4042", "#HLA-B4054", "#HLA-B4055", "#HLA-B4062", "#HLA-B4064", \
-		"#HLA-B4064", "#HLA-B4065", "#HLA-B4066", "#HLA-B4067", "#HLA-B4069", "#HLA-B4074", "#HLA-B4076", "#HLA-B4077"]:
-			continue
 		top_aa = []
 		top_aa_set = set()
 		path_num = 1
@@ -116,7 +112,7 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 		if len(cand_pep_seq) == 0:
 			continue
 
-		f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_log.txt"), "a")
+		f = open(os.path.join("predicted_peptides_bound_top" + str(top_num), str(k_mer) + "-mer_log.txt"), "a")
 		hla_num += 1
 		f.write(str(hla_num) + "\t" + str(hla_name) + "\t" + str(top_aa) + "\n")
 		print "hla", hla_num, hla_name
@@ -125,13 +121,12 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 			print "cand", k, len(v), len(pep_seq[k])
 		f.close()
 
-		count = 0
+		bound_pep_seq = {}
 		for t in itertools.product(*top_aa):
-
 			for k, v in cand_pep_seq.iteritems():
 				bound_pep = []
 				for pep in v:
-					if cmp_list(pep, t):
+					if collections.Counter(pep) == collections.Counter(t):
 						bound_pep.append([pep, hla_name, t])
 				if len(bound_pep) != 0:
 					if k not in bound_pep_seq:
@@ -140,10 +135,10 @@ def predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass):
 		if len(bound_pep_seq) == 0:
 			continue
 		for k, v in bound_pep_seq.iteritems():
-			f = open(os.path.join("test_mass_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
+			f = open(os.path.join("predicted_peptides_bound_top" + str(top_num), str(k_mer) + "-mer_" + str(k) + "-mass_bound.txt"), "a")
 			for bound_pep in v:
 				for pep in bound_pep:
-					f.write(pep[0] + "\t" + pep[1] +"\t" + str(pep[2]) + "\n")
+					f.write(pep[0] + "\t" + pep[1] + "\t" + ''.join(pep[2]) + "\n")
 					print "bound", pep[0], pep[1], pep[2]
 			f.close()
 
@@ -164,14 +159,14 @@ if __name__ == "__main__":
 
 	pssm_path = sys.argv[3]
 	top_num = int(sys.argv[4])
-	if not os.path.exists("test_mass_top" + str(top_num)):
-		os.makedirs("test_mass_top" + str(top_num))
+	if not os.path.exists("predicted_peptides_bound_top" + str(top_num)):
+		os.makedirs("predicted_peptides_bound_top" + str(top_num))
 
 	k_mass = int(sys.argv[5])
 	ppm = 10.0
 	k_mer = 9
 	pep_seq, pep_mass = {}, {}
-
+	'''
 	# Test
 	seq_list = ["KIVGAGPGA","LGGSGSGLR","AVATEAPNL","IGIAPLAQL","GLLGTLVQL","DGGNESDPM","ALASHLIEA","AIVDKVPSV","SLLDKIIGA","SLLGGNIRL","ALLDSAHLL","SLLEKSLGL","AVLTELRAV","TLIEDILGV","LSAEKIQAL","KLIANNTTV","ISRALVTTL","SLGLPQDVPG","SLFPGKLEV"]
 	mz_list = ["385.23495","402.22269","443.23782","448.28342","457.28906","461.16895","462.76172","464.27966","465.28659","471.7916","476.77765","480.29266","486.29782","486.78546","486.79044","487.28766","487.30121","491.76447","495.28641"]
@@ -191,9 +186,8 @@ if __name__ == "__main__":
 	'''
 	print "generating peptide sequences..."
 	count = 0
-	for pm in uni_pep_mass:
-	#for pm in uni_pep_mass[70*k_mass:70*k_mass+70]:
-	#for pm in uni_pep_mass[70*k_mass:]:
+	#for pm in uni_pep_mass:
+	for pm in uni_pep_mass[50*k_mass:50*k_mass+50]:
 		mass = 2*pm - 1.007825 #charge=2, and exclusive H+? need to clarify...
 		pep_seq_list, pep_mass_list = [], []
 		solPep, solMass = PeptideGeneration.generate_peptides(mass, ppm, aaName, aaMass)
@@ -217,4 +211,3 @@ if __name__ == "__main__":
 
 	print "searching for bound peptides..."
 	bound_pep_seq = predict_hla_bound_peptides(pssm_path, top_num, pep_seq, pep_mass)
-	'''
