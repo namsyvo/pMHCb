@@ -1,5 +1,6 @@
 import sys
 import os
+import itertools
 
 import PeptidePrediction
 
@@ -37,11 +38,11 @@ pssm_hla = pssm_hla_1.copy()
 pssm_hla.update(pssm_hla_2)
 #print "# of HLA alleles:", len(pssm_hla)
 
-from numpy import prod
-import itertools
+check_hla = ["#HLA-A0201", "#HLA-A2902", "#HLA-B0702", "#HLA-B4403", "#HLA-C0702"]
 
 top_num = 5
 hla_path_score = {}
+count = 0
 for hla, pssm in pssm_hla.iteritems():
 		top_score = []
 		path_num = 1
@@ -62,14 +63,13 @@ for hla, pssm in pssm_hla.iteritems():
 
 		scores = []
 		for t in itertools.product(*top_score):
-			scores.append(prod(t))
-		hla_path_score[hla] = scores
+			scores.append(sum(t))
+		hla_path_score[hla] = sorted(scores, reverse=True)
 
-		print "Finish", hla
+		print "Finish", hla, hla_path_score[hla][0:10]
 
 print len(hla_path_score)
 
-check_hla = ["#HLA-A0201", "#HLA-A2902", "#HLA-B0702", "#HLA-B4403", "#HLA-C0702"]
 for pep, hla_list in hla_binding.iteritems():
 	'''
 	score = []
@@ -114,13 +114,15 @@ for pep, hla_list in hla_binding.iteritems():
 	'''
 
 	for hla in hla_list:
+		print hla
 		s = 0
 		for i in range(len(pep)):
 			for j in range(len(aa_names)):
 				if pep[i] == aa_names[j]:
 					s += pssm_hla[hla][i][j]
 					break
-
-		for score in sorted(hla_path_score[hla], reverse=True):
-			if score < s:
+		print s
+		for score in hla_path_score[hla]:
+			if score <= s:
 				print pep + "\t" + hla + "\t" + seq_mass[pep] + "\t" + str(s) + "\t" + str(score)
+				break
